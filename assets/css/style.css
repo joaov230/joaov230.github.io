@@ -61,6 +61,10 @@ a:hover {
   box-shadow: 0 13px 8px -10px rgba(0, 0, 0, 0.1);
 }
 
+.blog-post {
+  margin-top: 2rem;
+}
+
 .box-shadow-a,
 .button:hover {
   text-decoration: none;
@@ -151,7 +155,7 @@ a:hover {
 
 /*--/ Title A /--*/
 .title-box {
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 .title-a {
