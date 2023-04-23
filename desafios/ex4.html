@@ -57,7 +57,7 @@
                     <p id="correctConfirmation" hidden>Parabéns, você acertou! Agora siga para o próximo nível!</p>
                 </div>
             </div>
-            
+            <div id="unittest"></div>
         </div>
 
 
@@ -68,29 +68,38 @@
         <script src="../lib/underscore-min.js"></script>
         <script src="../lib/lis.js"></script>
         <script src="../parsons.js"></script>
+        <script src="../lib/skulpt.js"></script>
+        <script src="../lib/skulpt-stdlib.js"></script>
+
         <script src="./definicaoDosExercicios.js"></script>
+
         <script>
         // Controle de níveis
-        var initial = exercicios['ex1'];
-        $(".enunciadoSecundario").append(enunciados['ex1']);
-        $('.dica').append(dicas['ex1']);
-        $("#nextLevel").attr("href", "./ex2.html");
+        var initial = exercicios['ex4'];
+        $(".enunciadoSecundario").append(enunciados['ex4']);
+        $('.dica').append(dicas['ex4']);
+        $("#nextLevel").attr("href", "./ex5.html");
         // Fim do controle de níveis
-
-        
 
         function displayErrors(fb) {
             if(fb.errors.length > 0) {
                 alert(fb.errors[0]);
             }
-        } 
+        }
 
         $(document).ready(function(){
             var parson = new ParsonsWidget({
                 'sortableId': 'sortable',
                 'trashId': 'sortableTrash',
                 'max_wrong_lines': 1,
-                'feedback_cb' : displayErrors,
+                // O initcode é o exercício 3 pois é uma continuação direta
+                // Como isso e um teste de variáveis e não teste unitário, a organização é dessa forma
+                'vartests': [{
+                    initcode: exercicios['ex3'],
+                    code: "", 
+                    message: "Testando chamando a funcao classifimc(p,h)",
+                    variables: {peso: 80, altura: 1.80}
+                }],
                 'lang': 'ptbr'
             });
             parson.init(initial);
@@ -102,9 +111,13 @@
             $("#feedbackLink").click(function(event){
                 event.preventDefault();
                 var fb = parson.getFeedback();
+                if (fb.feedback != undefined) {
+                    $("#unittest").html("<h2 class='feedbackPessoal'>Feedback da execução do código:</h2>" + fb.feedback);
+                }
                 if (fb.success) {
                     $("#correctConfirmation").show().css("display", "inline-block");
                     $("#nextLevel").show();
+                    $("#unittest").append('<h2 class="feedbackPessoal">Teste você mesmo!</h2>' + '<iframe class="codeSnippet" src="https://trinket.io/embed/python/518d79eb7b" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>');
                 }
             });
         });

@@ -1,3 +1,8 @@
+body {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 .container {
     background: rgba(162,209,242,1);
     background: -moz-linear-gradient(top, rgba(162,209,242,1) 0%, rgba(195,129,228,1) 100%);
@@ -100,11 +105,29 @@ a:hover {
     font-size: 15px;
 }
 
+.codeSnippet {
+    border-radius: 15px;
+    margin-bottom: 1rem;
+}
+
+.feedbackPessoal {
+    font-family: 'Roboto Slab', serif;
+    font-size: 25px;
+    font-weight: 600;
+}
+
 .enunciado {
     text-align: center;
     font-family: 'Roboto Slab', serif;
     font-size: 16px;
     font-weight: 600;
+}
+
+.enunciadoSecundario {
+    text-align: center;
+    font-family: 'Roboto Slab', serif;
+    font-size: 16px;
+    font-weight: 400;
 }
 
 .dica {
