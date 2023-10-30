@@ -1,116 +1,122 @@
-<!doctype html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Praticando Python Introdutório</title>
-        
-        <link rel="icon" href="./assets/Python-logo-notext.ico">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Praticando Python Introdutório</title>
 
-        <link href="./parsons.css" rel="stylesheet" />
-        <link href="./lib/prettify.css" rel="stylesheet" />
-        <link href="./personalStyle.css" rel="stylesheet"/>
-        <script src="./lib/prettify.js"></script>
+  <link rel="icon" href="./assets/Python-logo-notext.ico">
 
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link href="./parsons.css" rel="stylesheet" />
+  <link href="./lib/prettify.css" rel="stylesheet" />
+  <link href="./indexStyle.css" rel="stylesheet" />
+  <link href="./cssAnimations.css" rel="stylesheet" />
+  <script src="./lib/prettify.js"></script>
 
-        <!-- Google Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;600&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        
-        <div class="container justify-content-center">
-            <div class="row">
-                <h2 class="pageTitle">Praticando Python Introdutório</h2>
-            </div>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <!--
+    To use these fonts in style:
+    font-family: 'Montserrat', sans-serif;
+    font-family: 'Space Mono', monospace;
+  -->
 
-            <div class="row">
-                <div class="introducao">
-                    <p class="enunciado">Bem vindo, aqui você poderá praticar e reforçar seus conhecimentos em Python através de alguns exercícios em que você terá que organizar linhas de código para que executem conforme esperado. Boa sorte e bom aprendizado!</p>
-                    <p class="enunciado">Para começar, construa uma função condicional que verifique se o usuário quer continuar para a próxima página:</p>
-                </div>
-            </div>
+  <!-- Icons -->
+  <script src="https://kit.fontawesome.com/fc3f8d6bba.js" crossorigin="anonymous"></script>
 
-            <!-- DICA -->
-            <div class="codeBlocks">
-                <div id="sortableTrash" class="sortable-code"></div>
-                <div id="sortable" class="sortable-code"></div>
-            </div>
-                
-            <div style="clear:both;"></div>
-            
-            <div class="buttons">
-                <a href="#" id="newInstanceLink">Resetar</a>
-                <a href="#" id="feedbackLink">Conferir</a>
-                <a href="#" id="btnDica">Dica</a> <!-- DICA -->
-                <a href="./desafios/ex1.html" id="nextLevel" hidden>Próximo Nivel</a>
-            </div>
-            
-            <div class="row">
-                <p class="dica" hidden><span class="dicaLabel">Dica:</span> Atenção com a identação do código</p>
-                <div class="correctConfirmationArea">
-                    <p id="correctConfirmation" hidden>Parabéns, você acertou! Agora siga para o próximo nível!</p>
-                </div>
-            </div>
-            
-        </div>
+  <!-- Scripts -->
+  <script src="./lib/jquery.min.js"></script>
+  <script src="./lib/jquery-ui.min.js"></script>
+  <script src="./lib/jquery.ui.touch-punch.min.js"></script>
+  <script src="./lib/underscore-min.js"></script>
+  <script src="./lib/lis.js"></script>
+  <script src="./parsons.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async></script>
+  <script src="https://unpkg.com/jwt-decode/build/cjs/index.js"></script>
+  <!--<script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>-->
+  <script>
+    function handleCredentialResponse(response) {
+      const googleData = jwtDecode(response.credential)
+      console.log(googleData)
+
+      const postData = {
+        "actionRequest": "postNovoUsuario",
+        "payload": {
+          "email_verified": googleData.email_verified,
+          "email": googleData.email,
+          "sub": googleData.sub,
+          "name": googleData.name,
+          "pic": googleData.picture
+        }
+      }
+
+      fetch("https://script.google.com/macros/s/AKfycbwZKg-bWoZs_OgVkRUmvxxfrdQeSTWbk3lANkRDUPik-zAvLWfieRkhCgFrU415LYYg/exec",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+          redirect: "follow",
+          body: JSON.stringify(postData), // body data type must match "Content-Type" header
+        }
+      ).then(response => {
+        return response.json();
+      }).then(res => {
+        console.log(res);
+        if (res.status == "success") {
+          const auth = {
+            "email_verified": googleData.email_verified,
+            "email": res.data.email,
+            "sub": res.data.sub
+          }
+          const userData = {
+            "id": res.data.id,
+            "email": res.data.email,
+            "name": res.data.name,
+            "pic": res.data.pic,
+            "userLevel": res.data.userLevel,
+            "userNextLevel": res.data.userNextLevel,
+            "levelProgress": res.data.levelProgress
+          }
+          document.cookie = "auth=" + JSON.stringify(auth) + "; path=/";
+          document.cookie = "userData=" + JSON.stringify(userData) + "; path=/";
+
+          window.location.href = res.url;
+        }
+      });
+    }
 
 
-        <!-- Script -->
-        <script src="./lib/jquery.min.js"></script>
-        <script src="./lib/jquery-ui.min.js"></script>
-        <script src="./lib/jquery.ui.touch-punch.min.js"></script>
-        <script src="./lib/underscore-min.js"></script>
-        <script src="./lib/lis.js"></script>
-        <script src="./parsons.js"></script>
-        <script>
-        var initial = 'def continua(valor_booleano):\n' +
-                      '    if (valor_booleano==True):\n' +
-                      '        return "Sim, quero continuar"\n' +
-                      '    else:\n' +
-                      '        return "Não, por enquanto estou bem aqui"\n'
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "1030847469866-kllf62lh6mu02mvasd79erm5jo6b9t69.apps.googleusercontent.com",
+        callback: handleCredentialResponse
+      });
 
-        
+      google.accounts.id.renderButton(
+        document.getElementById("buttonDiv"),
+        {
+          theme: "filled_black",
+          size: "large",
+          type: "standard",
+          shape: "pill",
+          text: "continue_with",
+          logo_alignment: "left"
+        }  // customization attributes
+      );
+      google.accounts.id.prompt(); // also display the One Tap dialog
+    }
+  </script>
+</head>
 
-        function displayErrors(fb) {
-            if(fb.errors.length > 0) {
-                alert(fb.errors[0]);
-            }
-        } 
-
-        $(document).ready(function(){
-            var parson = new ParsonsWidget({
-                'sortableId': 'sortable',
-                'trashId': 'sortableTrash',
-                'max_wrong_lines': 1,
-                'feedback_cb' : displayErrors,
-                'lang': 'ptbr'
-            });
-            parson.init(initial);
-            parson.shuffleLines();
-            $("#newInstanceLink").click(function(event){
-                event.preventDefault();
-                parson.shuffleLines();
-            });
-            $("#feedbackLink").click(function(event){
-                event.preventDefault();
-                var fb = parson.getFeedback();
-                if (fb.success) {
-                    $("#correctConfirmation").show().css("display", "inline-block");
-                    $("#nextLevel").show();
-                }
-            });
-        });
-
-        $("#btnDica").click(function() {
-            $(".dica").show();
-        });
-
-        </script>
-    </body>
-</html>
+<body>
+  <div class="container">
+    <div class="login-image">
+      <img src="./assets/teste-de-imagem.png" alt="Código em python estilizado e rotacionado.">
+    </div>
+    <div class="login-form">
+      <div id="buttonDiv"></div>
+      <p></p>
+    </div>
+  </div>
+</body>

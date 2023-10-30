@@ -38,20 +38,7 @@ exercicios = {
         'print(classifimc()) #distractor\n' +
         'print(classifimc(peso,altura))\n',
     ex5:
-        'lista = [0,1,2,3,4,5]\n'+
-        'for i in range(6):\n'+
-        '  lista[i] = lista[i]*2\n'+
-        '  lista[i] = lista[i]**2 #distractor\n',
-    ex6:
-        'lista = [0,1,2,3,4,5]\n'+
-        'for i in range(len(lista)):\n'+
-        '  lista[i] = lista[i]*2\n',
-    ex7: 
-        'lista = [0,1,2,3,4,5]\n' +
-        'for i in range(len(lista)):\n'+
-        '  if (i%2==1):\n'+
-        '    lista[i] = lista[i]*2\n',
-    ex8: ''
+        '',
 }
 
 enunciados = {
@@ -60,10 +47,7 @@ enunciados = {
     "<br>Abaixo de 18.5 = magreza, entre 18.6 e 24.9 = peso normal, entre 25 e 29.9 = sobrepeso, acima disso são os consecutivos graus de obesidade.",
     ex3: "Crie a mesma função do exercício anterior, mas utilizando o comando Elif ao invés de Else If.",
     ex4: "Chame, da forma correta, a função criada anteriormente.",
-    ex5: "Passe por uma lista e multiplique todos seus elementos por 2.",
-    ex6: "Passe por uma lista e multiplique todos seus elementos por 2, dessa vez utilizando a função len(lista).",
-    ex7: "Multiplique por 2 <strong>apenas</strong> as posições ímpares da lista.",
-    ex8: ""
+    ex5: "",
 }
 
 dicas = {
@@ -71,8 +55,5 @@ dicas = {
     ex2: '<span class="dicaLabel">Dica:</span> Atenção com a identação do código',
     ex3: '<span class="dicaLabel">Dica:</span> Atenção com a identação do código',
     ex4: '<span class="dicaLabel">Dica:</span> Nem todas as linhas precisam ser utilizadas',
-    ex5: '<span class="dicaLabel">Dica:</span> Em python 1 "*" é usado para multiplicar, 2 "*" é para potências',
-    ex6: '<span class="dicaLabel">Dica:</span> len(lista) te retorna o tamanho da lista',
-    ex7: '<span class="dicaLabel">Dica:</span> Em python, "%" é usado para obter o resto da divisão',
-    ex8: ''
+    ex5: '',
 }
