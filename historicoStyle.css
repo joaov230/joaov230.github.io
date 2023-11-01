@@ -37,7 +37,7 @@ pre {
 }
 
 p {
-  margin: 5px 0px 5px 0px;
+  margin: 2px 0px 2px 0px;
 }
 
 
@@ -234,6 +234,7 @@ p {
 
 .exercise-title {
   font-size: medium;
+  margin: 5px 0px 5px 0px;
 }
 
 .exercise-date {
