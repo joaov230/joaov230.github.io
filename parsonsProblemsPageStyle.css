@@ -125,10 +125,11 @@ pre {
 }
 
 #logo {
-  margin-left: 2rem;
+  margin-left: 3rem;
 }
 
 .menu-icon {
+  font-size: 2.3rem;
   margin-right: 3rem;
   transition: ease 0.2s;
   color: #f1f1f1;
@@ -189,6 +190,10 @@ pre {
 #enunciadoText {
   display: inline-block;
   margin-top: 20px;
+}
+
+.added pre {
+  padding-left: 5px;
 }
 
 /* CODE AREA RELATED */
@@ -388,4 +393,13 @@ pre {
   background: #6d7ab6;
 
   border-bottom: 1px solid #424b6e;
+}
+
+/* CANVAS */
+
+.my-canvas {
+  display: block;
+  position: absolute;
+  height: 300px;
+  width: 300px;
 }

@@ -1,7 +1,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Praticando Python Introdutório</title>
+  <title>Python Parsons Puzzles</title>
 
   <link rel="icon" href="./assets/logoicon.png">
 
@@ -42,11 +42,13 @@
   <div id="sidebar-wrapper">
     <div id="sidebar" class="w3-sidebar w3-bar-block w3-border-right">
       <button onclick="w3_close()" class="w3-bar-item w3-large">Fechar</button>
-      <a id="parsons-problems-link" href="./parsonsProblemsPage.html" class="w3-bar-item w3-button">Inicio</a>
+      <a id="parsons-problems-link" href="./parsonsProblemsPage.html" class="w3-bar-item w3-button">Home</a>
       <a id="historico-link" href="./historicoPage.html" class="w3-bar-item w3-button">Histórico</a>
       <a id="sobre-link" href="./sobrePage.html" class="w3-bar-item w3-button">Sobre</a>
+      <a id="logout-link" href="#" class="w3-bar-item w3-button">Log out</a>
     </div>
   </div>
+
 
   <div id="master-container">
     <div class="container">
@@ -86,17 +88,18 @@
       <div class="code-area">
         <div class="buttons-notch">
           <div class="buttons">
-            <button class="button" id="btnSubmit">Run</button>
+            <button class="button" id="btnChangeExercise">Resortear</button>
+            <button class="button" id="btnReset">Resetar</button>
             <button class="button" id="btnTestYourself" hidden>
               <img src="./assets/trinket-logo.png" height="15px">
-              Teste</button>
+              Teste
+            </button>
             <button class="button" id="btnNext" disabled="true" hidden>Continuar</button>
             <div id="msg-salvando" style="display: none;">
               <span class="loader"></span>
               <span class="icon-text">Salvando...</span>
             </div>
-            <button class="button" id="btnReset">Resetar</button>
-            <button class="button" id="btnChangeExercise">Resortear</button>
+            <button class="button" id="btnSubmit">Run</button>
           </div>
         </div>
         <div class="code-code-area">
@@ -141,6 +144,11 @@
 <script>
   const userData = getCookie("userData");
   const auth = getCookie("auth");
+
+  if (userData === null || auth === null) {
+    accessDenied_returningToMain();
+  }
+
   var randEx;
   var tentativasCont;
   var tentativas = [];
@@ -217,32 +225,35 @@
       "auth": auth
     }
 
+    try {
+      fetch("https://script.google.com/macros/s/AKfycbwZKg-bWoZs_OgVkRUmvxxfrdQeSTWbk3lANkRDUPik-zAvLWfieRkhCgFrU415LYYg/exec",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+          redirect: "follow",
+          body: JSON.stringify(postData), // body data type must match "Content-Type" header
+        }
+      ).then(response => {
+        return response.json();
+      }).then(res => {
+        console.log(res);
 
-    fetch("https://script.google.com/macros/s/AKfycbwZKg-bWoZs_OgVkRUmvxxfrdQeSTWbk3lANkRDUPik-zAvLWfieRkhCgFrU415LYYg/exec",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8",
-        },
-        redirect: "follow",
-        body: JSON.stringify(postData), // body data type must match "Content-Type" header
-      }
-    ).then(response => {
-      return response.json();
-    }).then(res => {
-      console.log(res);
-      setUserLevel(res.data.userLevelInfo);
+        setUserLevel(res.data.userLevelInfo);
 
-      $("#msg-salvando").css('display', 'none');
+        $("#msg-salvando").css('display', 'none');
 
-      btnEnable("#btnNext", "#50fa7b");
-      $("#btnNext").show();
-      if (hasTrinket) {
-        btnEnable("#btnTestYourself", "#b184c2");
-        $("#btnTestYourself").show();
-      }
-    });
-
+        btnEnable("#btnNext", "#50fa7b");
+        $("#btnNext").show();
+        if (hasTrinket) {
+          btnEnable("#btnTestYourself", "#b184c2");
+          $("#btnTestYourself").show();
+        }
+      });
+    } catch (error) {
+      window.alert("Algo deu errado :/\nRecarregue a página.");
+    }
   }
 
   function getExercicioAleatorio(userData) {
@@ -307,6 +318,15 @@
       //////////////////////////////
       setNovoExercicio(res);
 
+      console.log(parson)
+
+      window.addEventListener("beforeunload", function(e) {
+        if(Object.keys(parson.states).length && $("#btnNext").prop('disabled') === true) {
+          e.preventDefault();
+        }
+      });
+      
+
       // Muda o exercício (GET de um novo exercício)
       $("#btnChangeExercise").click(function (event) {
         event.preventDefault();
@@ -354,6 +374,14 @@
         $(".popup-wrapper").css('display', 'none');
       });
 
+      $('.popup-wrapper').click(function (e) {
+        const $target = $(e.target)
+        const conditionalToClosePopup = (!$target.is(".popup") && !$target.is($(".popup").children()) && !$target.is(".popup-content") && !$target.is($(".popup-content").children()) && !$target.is(".added") && !$target.is($(".added").children()))
+
+        if (conditionalToClosePopup) {
+          $(".popup-wrapper").css('display', 'none');
+        }
+      });
 
       $('#menu').click(function (e) {
         e.stopPropagation();
@@ -367,6 +395,10 @@
         if (conditionalToCloseSidebar) {
           w3_close();
         }
+      });
+
+      $('#logout-link').click(function (e) {
+        logout(e);
       });
       //////////////////////////////
     });
