@@ -246,7 +246,7 @@
       ).then(response => {
         return response.json();
       }).then(res => {
-        console.log(res);
+        console.log(res); // For testing
         if (typeof res.data != 'undefined') {
           setUserLevel(res.data.userLevelInfo);
 
