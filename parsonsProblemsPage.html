@@ -212,6 +212,7 @@
     btnDisable("#btnSubmit");
     $("#btnSubmit").hide();
 
+    $("#btnChangeExercise").prop('disabled', true);
     $("#btnReset").prop('disabled', true);
 
     $("#msg-salvando").css('display', 'flex');
@@ -248,6 +249,8 @@
         console.log(res);
         if (typeof res.data != 'undefined') {
           setUserLevel(res.data.userLevelInfo);
+
+          $("#btnChangeExercise").prop('disabled', false);
 
           $("#msg-salvando").css('display', 'none');
 
